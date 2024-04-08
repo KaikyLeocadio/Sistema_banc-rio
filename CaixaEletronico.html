@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+<head>
+    <title>Operações Bancárias</title>
+    <style>
+        .container {
+            background-color: rgb(198, 229, 255);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .saldo {
+            background-color: rgb(98, 93, 255);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: white;
+            border: 2px double rgb(0, 159, 29);
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-size: 18px;
+            padding: 10px;
+        }
+        .botoes {
+            font-weight: 500;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .botao {
+            color: white;
+            border: solid 2px blue;
+            border-radius: 25px;
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .botao:hover {
+            transition: 0.5s;
+            background-color: blue;
+            border-color: rgb(0, 159, 29);
+        }
+
+        .botao:not(:hover) {
+            transition: 0.5s;
+            background-color: rgb(0, 159, 29);
+            border-color: blue;
+        }
+
+        .mensagem {
+            margin-top: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="saldo" id="saldo">****</div>
+        <div class="botoes">
+            <div class="botao" id="saldoBtn">Saldo</div>
+            <div class="botao" id="extratoBtn">Extrato</div>
+            <div class="botao" id="saqueBtn">Saque</div>
+            <div class="botao" id="depositoBtn">Depósito</div>
+            <div class="botao" id="transferenciaBtn">Transferência</div>
+            <div class="botao" id="sairBtn">Sair</div>
+        </div>
+        <div class="mensagem" id="mensagem"></div>
+    </div>
+
+    <script>
+        var saldo = 100.5;
+        var nomeUsuario;
+
+        function inicio() {
+            nomeUsuario = prompt('Qual o seu nome?');
+            document.getElementById('mensagem').textContent = 'Olá ' + nomeUsuario + ', é um prazer ter você por aqui!';
+        }
+
+        document.getElementById('saldoBtn').addEventListener('click', function () {
+            var senha = prompt('Informe a senha:');
+            if (senha === '3589') {
+                document.getElementById('saldo').textContent = 'Valor Disponível na Conta: R$' + saldo.toFixed(2);
+                document.getElementById('mensagem').textContent = '';
+            } else {
+                document.getElementById('mensagem').textContent = 'Senha incorreta. Tente novamente.';
+            }
+        });
+
+        document.getElementById('extratoBtn').addEventListener('click', function () {
+            var senha = prompt('Informe a senha:');
+            if (senha === '3589') {
+                document.getElementById('mensagem').textContent = 'Extrato:\n- Compra 1: R$50\n- Compra 2: R$30\n- Depósito: R$200\nSaldo atual: R$' + saldo.toFixed(2);
+            } else {
+                document.getElementById('mensagem').textContent = 'Senha incorreta. Tente novamente.';
+            }
+        });
+
+        document.getElementById('saqueBtn').addEventListener('click', function () {
+            var senha = prompt('Informe a senha:');
+            if (senha === '3589') {
+                var saque = parseFloat(prompt('Qual o valor para saque?'));
+                if (isNaN(saque) || saque <= 0) {
+                    document.getElementById('mensagem').textContent = 'Operação não autorizada. Valor inválido.';
+                } else if (saque > saldo) {
+                    document.getElementById('mensagem').textContent = 'Operação não autorizada. Saldo insuficiente.';
+                } else {
+                    saldo -= saque;
+                    document.getElementById('saldo').textContent = 'Valor Disponível na Conta: R$' + saldo.toFixed(2);
+                    document.getElementById('mensagem').textContent = 'Saque realizado com sucesso.';
+                }
+            } else {
+                document.getElementById('mensagem').textContent = 'Senha incorreta. Tente novamente.';
+            }
+        });
+
+        document.getElementById('depositoBtn').addEventListener('click', function () {
+            var senha = prompt('Informe a senha:');
+            if (senha === '3589') {
+                var deposito = parseFloat(prompt('Qual o valor para depósito?'));
+                if (isNaN(deposito) || deposito <= 0) {
+                    document.getElementById('mensagem').textContent = 'Operação não autorizada. Valor inválido.';
+                } else {
+                    saldo += deposito;
+                    document.getElementById('saldo').textContent = 'Valor Disponível na Conta: R$' + saldo.toFixed(2);
+                    document.getElementById('mensagem').textContent = 'Depósito realizado com sucesso.';
+                }
+            } else {
+                document.getElementById('mensagem').textContent = 'Senha incorreta. Tente novamente.';
+            }
+        });
+
+        document.getElementById('transferenciaBtn').addEventListener('click', function () {
+            var senha = prompt('Informe a senha:');
+            if (senha === '3589') {
+                var contaDestino = parseInt(prompt('Informe o número da conta de destino:'));
+                if (!isNaN(contaDestino)) {
+                    var valorTransferencia = parseFloat(prompt('Qual o valor para transferência?'));
+                    if (isNaN(valorTransferencia) || valorTransferencia <= 0) {
+                        document.getElementById('mensagem').textContent = 'Operação não autorizada. Valor inválido.';
+                    } else if (valorTransferencia > saldo) {
+                        document.getElementById('mensagem').textContent = 'Operação não autorizada. Saldo insuficiente.';
+                    } else {
+                        saldo -= valorTransferencia;
+                        document.getElementById('saldo').textContent = 'Valor Disponível na Conta: R$' + saldo.toFixed(2);
+                        document.getElementById('mensagem').textContent = 'Transferência realizada com sucesso para a conta ' + contaDestino + '.';
+                    }
+                } else {
+                    document.getElementById('mensagem').textContent = 'Operação não autorizada. Número de conta inválido.';
+                }
+            } else {
+                document.getElementById('mensagem').textContent = 'Senha incorreta. Tente novamente.';
+            }
+        });
+
+        document.getElementById('sairBtn').addEventListener('click', function () {
+            alert(nomeUsuario + ', foi um prazer ter você por aqui!');
+            window.close();
+        });
+
+        inicio();
+    </script>
+</body>
+</html>
